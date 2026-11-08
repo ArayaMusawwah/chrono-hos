@@ -20,6 +20,31 @@ class ListFilterSettingsScreen extends StatefulWidget {
 class _ListFilterSettingsScreenState extends State<ListFilterSettingsScreen> {
   final _listController = PersistentListController<Tag>();
 
+  Future<Tag?> showTagEditor([Tag? initialTag]) async {
+    Tag newTag = Tag.from(initialTag ?? Tag("New Preset"));
+
+    String? tagName = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      enableDrag: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return InputBottomSheet(
+              title: "Edit Tag",
+              description: "",
+              initialValue: newTag.name,
+              hintText: "Enter tag name",
+              onChange: (value) {},
+            );
+          },
+        );
+      },
+    );
+    newTag.name = tagName ?? newTag.name;
+    return newTag;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

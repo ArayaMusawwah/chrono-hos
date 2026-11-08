@@ -1,4 +1,5 @@
 import 'package:clock_app/alarm/screens/alarm_screen.dart';
+import 'package:clock_app/bedtime/screens/bedtime_screen.dart';
 import 'package:clock_app/navigation/types/quick_action_controller.dart';
 import 'package:clock_app/stopwatch/screens/stopwatch_screen.dart';
 import 'package:clock_app/timer/screens/timer_screen.dart';
@@ -32,5 +33,10 @@ List<Tab> getTabs(BuildContext context,
         title: AppLocalizations.of(context)!.stopwatchTitle,
         icon: FluxIcons.stopwatch,
         widget: const StopwatchScreen()),
+    Tab(
+        id: "bedtime",
+        title: AppLocalizations.of(context)?.bedtimeTitle ?? "Bedtime",
+        icon: FluxIcons.night,
+        widget: const BedtimeScreen()),
   ];
 }

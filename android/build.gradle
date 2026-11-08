@@ -1,8 +1,28 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools:r8:8.2.42'
+    }
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
         maven { url "${project(':background_fetch').projectDir}/libs" }
+    }
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group == 'androidx.lifecycle' && details.requested.name != 'lifecycle-extensions') {
+                details.useVersion '2.7.0'
+            }
+            if (details.requested.group == 'com.transistorsoft' && details.requested.name == 'tsbackgroundfetch') {
+                details.useVersion '1.0.4'
+            }
+        }
     }
 }
 

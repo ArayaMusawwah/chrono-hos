@@ -52,11 +52,10 @@ Future<void> _clearSettings() async {
   AwesomeNotifications().cancelAll();
 }
 
-Future<void> initializeStorage([bool clearSettingsOnDebug = true]) async {
+Future<void> initializeStorage([bool clearSettingsOnDebug = false]) async {
   await GetStorage.init();
 
-  // Used to clear the preferences in case of a change in format of the data
-  // Comment this out after the preferences are cleared
+  // Settings are preserved across debug restarts to prevent wiping user data.
   if (kDebugMode && clearSettingsOnDebug) await _clearSettings();
 
   // bool? firstLaunch = GetStorage().read('first_launch');

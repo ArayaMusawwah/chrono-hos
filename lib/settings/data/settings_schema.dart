@@ -1,4 +1,5 @@
 import 'package:clock_app/alarm/data/alarm_app_settings_schema.dart';
+import 'package:clock_app/bedtime/data/bedtime_settings_schema.dart';
 import 'package:clock_app/clock/data/clock_settings_schema.dart';
 import 'package:clock_app/developer/data/developer_settings_schema.dart';
 import 'package:clock_app/settings/data/accessibility_settings_schema.dart';
@@ -30,6 +31,7 @@ SettingGroup appSettings = SettingGroup(
     clockSettingsSchema,
     timerAppSettingsSchema,
     stopwatchSettingsSchema,
+    bedtimeSettingsSchema,
     widgetSettingSchema,
     accessibilitySettingsSchema,
     backupSettingsSchema,

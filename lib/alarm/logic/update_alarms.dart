@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:clock_app/alarm/logic/alarm_isolate.dart';
 import 'package:clock_app/alarm/logic/schedule_alarm.dart';
+import 'package:clock_app/bedtime/logic/schedule_bedtime.dart';
 import 'package:clock_app/alarm/types/alarm.dart';
 import 'package:clock_app/common/types/notification_type.dart';
 import 'package:clock_app/common/types/schedule_id.dart';
@@ -53,6 +54,8 @@ Future<void> updateAlarms(String description) async {
   alarms.removeWhere((alarm) => alarm.isMarkedForDeletion);
 
   await saveList("alarms", alarms);
+
+  await updateBedtimeAlarms();
 
   // Notify other isolates that are listening for alarm updates
   SendPort? sendPort = IsolateNameServer.lookupPortByName(updatePortName);

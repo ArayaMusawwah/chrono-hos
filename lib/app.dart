@@ -19,6 +19,7 @@ import 'package:clock_app/theme/types/style_theme.dart';
 import 'package:clock_app/theme/types/theme_brightness.dart';
 import 'package:clock_app/theme/utils/color_scheme.dart';
 import 'package:clock_app/timer/screens/timer_notification_screen.dart';
+import 'package:clock_app/bedtime/logic/update_bedtime_widget.dart';
 import 'package:clock_app/widgets/logic/update_widgets.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,7 @@ class _AppState extends State<App> {
     super.initState();
 
     setDigitalClockWidgetData(context);
+    setBedtimeWidgetData();
 
     setNotificationListeners();
 

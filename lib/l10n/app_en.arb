@@ -775,5 +775,31 @@
   "arabicNumeral": "Arabic",
   "showDigitalClock": "Show digital clock",
   "backgroundServiceIntervalSetting": "Background service interval",
-  "backgroundServiceIntervalSettingDescription": "Lower interval will help keep the app alive, at the cost of some battery life"
+  "backgroundServiceIntervalSettingDescription": "Lower interval will help keep the app alive, at the cost of some battery life",
+
+  "bedtimeTitle": "Bedtime",
+  "@bedtimeTitle": {
+    "description": "Title of the bedtime screen"
+  },
+  "bedtimeEnabledSetting": "Enabled",
+  "bedtimeEnabledDescription": "Master switch for the bedtime routine",
+  "bedtimeScheduleGroup": "Sleep Schedule",
+  "bedtimeTimeSetting": "Bedtime",
+  "bedtimeWakeTimeSetting": "Wake time",
+  "bedtimeDndGroup": "Do Not Disturb",
+  "bedtimeDndOnSetting": "Turn on DND at bedtime",
+  "bedtimeDndOnDescription": "DND is automatically activated at bedtime",
+  "bedtimeDndOffSetting": "Turn off DND at wake time",
+  "bedtimeSunriseGroup": "Sunrise Wake",
+  "bedtimeSunriseEnabledSetting": "Follow sunrise",
+  "bedtimeSunriseEnabledDescription": "Wake time is calculated from local sunrise each day",
+  "bedtimeSunriseOffsetSetting": "Offset before sunrise",
+  "bedtimeReminderGroup": "Reminder",
+  "bedtimeReminderSetting": "Pre-sleep reminder",
+  "bedtimeReminderDescription": "Notification shortly before the scheduled bedtime",
+  "bedtimeReminderLeadTimeSetting": "Lead time",
+  "bedtimeDndPermissionTitle": "Grant Do Not Disturb access",
+  "bedtimeDndPermissionDescription": "Bedtime routine requires DND access to automatically turn DND on and off. Go to Settings > Sound > Do Not Disturb > Allow apps.",
+  "bedtimeAutostartTitle": "Enable autostart",
+  "bedtimeAutostartDescription": "Add the app to HyperOS autostart and disable battery optimization so the bedtime alarm fires reliably."
 }

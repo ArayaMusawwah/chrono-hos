@@ -43,10 +43,16 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
           selectedItemColor: Theme.of(context).colorScheme.primary,
           unselectedItemColor:
               Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
-          showUnselectedLabels: false,
-          selectedLabelStyle: Theme.of(context).textTheme.titleSmall,
-          unselectedLabelStyle: Theme.of(context).textTheme.titleSmall,
-          iconSize: 24,
+          showUnselectedLabels: true,
+          selectedLabelStyle: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w400,
+          ),
+          iconSize: 22,
           type: BottomNavBarType.fixed,
           onTap: widget.onTabSelected,
         ),

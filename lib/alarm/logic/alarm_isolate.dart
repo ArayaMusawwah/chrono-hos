@@ -12,6 +12,8 @@ import 'package:clock_app/timer/types/timer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:clock_app/alarm/logic/schedule_alarm.dart';
 import 'package:clock_app/alarm/logic/update_alarms.dart';
+import 'package:clock_app/bedtime/logic/dnd_service.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:clock_app/alarm/types/alarm.dart';
 import 'package:clock_app/alarm/types/ringing_manager.dart';
 import 'package:clock_app/audio/types/ringtone_player.dart';
@@ -63,6 +65,30 @@ void triggerScheduledNotification(int scheduleId, Json params) async {
     triggerAlarm(scheduleId, params);
   } else if (notificationType == ScheduledNotificationType.timer) {
     triggerTimer(scheduleId, params);
+  } else if (notificationType == ScheduledNotificationType.bedtime) {
+    triggerBedtimeAlarm(scheduleId, params);
+  }
+}
+
+void triggerBedtimeAlarm(int scheduleId, Json params) async {
+  final action = params?['bedtime_action'] as String? ?? '';
+  switch (action) {
+    case 'dnd_on':
+      await DndService.setDnd(true);
+      break;
+    case 'dnd_off':
+      await DndService.setDnd(false);
+      break;
+    case 'reminder':
+      await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: scheduleId,
+          channelKey: 'reminders',
+          title: 'Time to wind down',
+          body: 'Bedtime is coming up soon.',
+        ),
+      );
+      break;
   }
 }
 

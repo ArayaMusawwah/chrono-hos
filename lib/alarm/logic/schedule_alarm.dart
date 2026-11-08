@@ -1,4 +1,5 @@
-import 'dart:io';
+import 'dart:async';
+import 'dart:io' show Platform;
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:clock_app/alarm/logic/alarm_isolate.dart';
 import 'package:clock_app/alarm/logic/alarm_reminder_notifications.dart';
@@ -18,6 +19,7 @@ Future<void> scheduleAlarm(
   ScheduledNotificationType type = ScheduledNotificationType.alarm,
   bool alarmClock = true,
   bool snooze = false,
+  Map<String, String> extraParams = const {},
 }) async {
   DateTime now = DateTime.now();
   if (startDate.isBefore(now)) {
@@ -26,7 +28,6 @@ Future<void> scheduleAlarm(
   }
 
   if (!Platform.environment.containsKey('FLUTTER_TEST')) {
-    // await cancelAlarm(scheduleId, type);
     List<AlarmEvent> alarmEvents = await loadList<AlarmEvent>('alarm_events');
     for (var event in alarmEvents) {
       if (event.scheduleId == scheduleId) {
@@ -34,19 +35,15 @@ Future<void> scheduleAlarm(
       }
     }
 
-    String name = type == ScheduledNotificationType.alarm
-        ? 'alarm_schedule_ids'
-        : 'timer_schedule_ids';
+    String name =
+        type == ScheduledNotificationType.alarm || type == ScheduledNotificationType.bedtime
+            ? 'alarm_schedule_ids'
+            : 'timer_schedule_ids';
     List<ScheduleId> scheduleIds = await loadList<ScheduleId>(name);
     scheduleIds.removeWhere((id) => id.id == scheduleId);
-    //
-    // if (type == ScheduledNotificationType.alarm) {
-    //   await cancelAlarmReminderNotification(scheduleId);
-    // }
 
     AndroidAlarmManager.cancel(scheduleId);
 
-    // This is for logging purposes
     alarmEvents.insert(
         0,
         AlarmEvent(
@@ -67,16 +64,10 @@ Future<void> scheduleAlarm(
     }
     await saveList<AlarmEvent>('alarm_events', alarmEvents);
 
-    // We store all scheduled ids so we can cancel them all if needed
     scheduleIds.add(ScheduleId(id: scheduleId));
     await saveList<ScheduleId>(name, scheduleIds);
 
-    //
-    // if (type == ScheduledNotificationType.alarm && !snooze) {
-    // }
-    //
-    // Scheduling the actual alarm
-    AndroidAlarmManager.oneShotAt(
+    final succeeded = await AndroidAlarmManager.oneShotAt(
       startDate,
       scheduleId,
       triggerScheduledNotification,
@@ -89,11 +80,17 @@ Future<void> scheduleAlarm(
         'scheduleId': scheduleId.toString(),
         'timeOfDay': startDate.toTimeOfDay().encode(),
         'type': type.name,
+        ...extraParams,
       },
     );
 
-    logger.t(
-        'Scheduled alarm $scheduleId for $startDate of type ${type.name}: $description');
+    if (succeeded) {
+      logger.t(
+          'Scheduled alarm $scheduleId for $startDate of type ${type.name}: $description');
+    } else {
+      logger.w(
+          'FAILED to schedule alarm $scheduleId at $startDate — falling back to periodic monitor');
+    }
   }
 }
 
@@ -107,9 +104,10 @@ Future<void> cancelAlarm(int scheduleId, ScheduledNotificationType type) async {
     }
     await saveList<AlarmEvent>('alarm_events', alarmEvents);
 
-    String name = type == ScheduledNotificationType.alarm
-        ? 'alarm_schedule_ids'
-        : 'timer_schedule_ids';
+    String name =
+        type == ScheduledNotificationType.alarm || type == ScheduledNotificationType.bedtime
+            ? 'alarm_schedule_ids'
+            : 'timer_schedule_ids';
     List<ScheduleId> scheduleIds = await loadList<ScheduleId>(name);
     scheduleIds.removeWhere((id) => id.id == scheduleId);
     await saveList<ScheduleId>(name, scheduleIds);

@@ -76,9 +76,21 @@ class _NavScaffoldState extends State<NavScaffold> {
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
     setState(() {
-      _controller.jumpToPage(index);
       _selectedTabIndex = index;
     });
+
+    if (_controller.hasClients) {
+      final pageDiff = ((_controller.page ?? _selectedTabIndex.toDouble()) - index).abs();
+      if (pageDiff <= 1.0) {
+        _controller.animateToPage(
+          index,
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
+        );
+      } else {
+        _controller.jumpToPage(index);
+      }
+    }
 
     if (tabInitAction != null) {
       SchedulerBinding.instance.addPostFrameCallback((_) {

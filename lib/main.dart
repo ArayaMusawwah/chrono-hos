@@ -43,7 +43,7 @@ void main() async {
   await Future.wait(initializeData);
 
   // These rely on initializeAppDataDirectory
-  await initializeStorage();
+  await initializeStorage(false);
   await initializeSettings();
 
   await updateAlarms("Update Alarms on Start");
